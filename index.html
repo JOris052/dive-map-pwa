@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dive Center Map</title>
+    <!-- Link to the Web App Manifest for PWA features -->
+    <link rel="manifest" href="/manifest.json">
+    <!-- Theme color for the browser UI (e.g., Android status bar) -->
+    <meta name="theme-color" content="#007bff">
+
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter font -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
+    <!-- Leaflet CSS for map styling -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        #mapid {
+            height: 60vh; /* Map takes 60% of viewport height */
+            width: 100%;
+            border-radius: 0.5rem; /* Rounded corners */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            flex-grow: 1; /* Allow map to grow and take available space */
+        }
+        .info-card {
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        /* Custom styling for Leaflet popups and tooltips */
+        .leaflet-popup-content-wrapper,
+        .leaflet-tooltip-pane .leaflet-tooltip {
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .leaflet-popup-content,
+        .leaflet-tooltip-pane .leaflet-tooltip-content {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.875rem; /* Small text for tooltip */
+            padding: 0.5rem 0.75rem; /* Padding for tooltip */
+        }
+        @media (min-width: 768px) {
+            #mapid {
+                height: 75vh; /* Taller on larger screens */
+            }
+        }
+
+        /* Styles for the QR Code Modal */
+        .qr-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7); /* Dark overlay */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000; /* Ensure it's on top */
+            opacity: 0; /* Hidden by default */
+            visibility: hidden; /* Hidden by default */
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .qr-modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .qr-modal-content {
+            background-color: #ffffff;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .qr-modal-content img {
+            max-width: 100%;
+            max-height: 80vh; /* Adjust as needed */
+            height: auto;
+            border-radius: 0.25rem;
+        }
+        .qr-modal-close-button {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #4a5568; /* Tailwind gray-700 */
+        }
+        .qr-modal-close-button:hover {
+            color: #2d3748; /* Tailwind gray-900 */
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-4 md:p-8 flex flex-col items-center">
+    <!-- Main content container -->
+    <div class="max-w-4xl w-full">
+        <h1 class="text-3xl font-bold text-center text-blue-800 mb-6">Dive Center Map</h1>
+
+        <!-- Dive Center Information Section -->
+        <div id="dive-center-info" class="info-card">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Our Dive Center</h2>
+            <p id="center-name" class="text-xl font-medium text-blue-700"></p>
+            <p id="center-address" class="text-gray-700"></p>
+            <p id="center-phone" class="text-gray-700"></p>
+            <p id="center-email" class="text-gray-700"></p>
+     		<a href="https://www.scubasur.net" target="_blank" class="text-blue-500 hover:underline">www.scubasur.net</a></p>
+             <p id="center-description" class="text-gray-600 mt-2"></p>
+        </div>
+
+        <!-- Map Container -->
+        <div id="mapid"></div>
+
+        <h2 class="text-2xl font-semibold text-center text-gray-800 mt-8 mb-4">Explore Our Dive Sites</h2>
+        <p class="text-center text-gray-600 mb-8">Click on a marker to learn more about each dive site!</p>
+    </div>
+
+    <!-- QR Code Modal Structure -->
+    <div id="qrModal" class="qr-modal-overlay">
+        <div class="qr-modal-content">
+            <button class="qr-modal-close-button" id="closeQrModal">&times;</button>
+            <h3 class="text-xl font-semibold mb-4" id="qrModalTitle">QR Code</h3>
+            <img src="" alt="QR Code" id="qrCodeImage" class="max-w-full h-auto rounded-md">
+           <p class="mt-2 text-sm text-gray-500" id="qrModalSiteName"></p>
+        </div>
+    </div>
+
+    <!-- Leaflet JavaScript for map functionality -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        // IMPORTANT: Tell Leaflet where to find its default icons
+        // This must be done BEFORE L.map() is called.
+        L.Icon.Default.imagePath = '/images/'; // Adjust this path if your 'images' folder is named differently or in a subfolder
+
+        // Get references to the modal elements
+        const qrModal = document.getElementById('qrModal');
+        const qrCodeImage = document.getElementById('qrCodeImage');
+        const qrModalTitle = document.getElementById('qrModalTitle');
+        const qrModalSiteName = document.getElementById('qrModalSiteName');
+        const closeQrModalBtn = document.getElementById('closeQrModal');
+
+        // Function to show the QR code modal
+        function showQrCode(imageFilename, siteName) {
+            // Construct the path to the QR code image. Assumes QR codes are in a 'qrcodes' folder.
+            qrCodeImage.src = `/qrcodes/${imageFilename}`;
+            qrModalTitle.textContent = `QR Code for ${siteName}`;
+            qrModalSiteName.textContent = `(${siteName})`;
+            qrModal.classList.add('show'); // Show the modal
+        }
+
+        // Function to hide the QR code modal
+        function hideQrCode() {
+            qrModal.classList.remove('show'); // Hide the modal
+            qrCodeImage.src = ''; // Clear image source to prevent flashing
+        }
+
+        // Add event listener to close button
+        closeQrModalBtn.addEventListener('click', hideQrCode);
+
+        // Close modal if clicking outside the content
+        qrModal.addEventListener('click', (event) => {
+            if (event.target === qrModal) {
+                hideQrCode();
+            }
+        });
+
+
+        // Ensure the entire window has loaded before running the script
+        window.onload = function() {
+            // Register the Service Worker for PWA offline capabilities
+			if ('serviceWorker' in navigator) {
+				navigator.serviceWorker.register('./service-worker.js')
+				.then(reg => console.log('Service Worker Registered', reg))
+				.catch(err => console.error('Service Worker Registration Failed:', err));
+			}
+			
+            // Initialize the map and set its initial view.
+            // Coordinates are for a central point in Spain (e.g., near Madrid),
+            // you'll want to adjust this to be centered on your dive center's region.
+            // The zoom level (10) can also be adjusted.
+            const map = L.map('mapid').setView([27.770775407552719, -15.69622278213501], 12); // Centered on your dive center, zoom level 12
+
+            // Add OpenStreetMap tiles to the map.
+            // This is the visual layer of the map.
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                // Max zoom level for the tiles
+                maxZoom: 19,
+                // Attribution is important to give credit to OpenStreetMap
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            let diveCenterLatLng = null; // Variable to store the dive center's LatLng for distance calculation
+
+            // Function to fetch and process configuration data
+            async function loadDiveData() {
+                try {
+                    console.log('Attempting to fetch config.json...');
+                    // Fetch the config.json file from the same directory as this HTML file
+                    const response = await fetch('config.json');
+                    console.log('Fetch response status:', response.status); // Log the HTTP status
+
+                    // Check if the response was successful (e.g., status 200 OK)
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    // Parse the JSON data from the response
+                    const data = await response.json();
+                    console.log('Successfully parsed config.json data:', data); // Log the parsed data object
+
+                    // --- Display Dive Center Information ---
+                    const diveCenter = data.diveCenter;
+                    if (diveCenter) {
+                        console.log('Dive center data found:', diveCenter); // Confirm diveCenter exists
+                        document.getElementById('center-name').textContent = diveCenter.name;
+                        document.getElementById('center-address').textContent = diveCenter.address;
+                        document.getElementById('center-phone').textContent = `Phone: ${diveCenter.phone}`;
+                        document.getElementById('center-email').textContent = `Email: ${diveCenter.email}`;
+                        document.getElementById('center-description').textContent = diveCenter.description;
+
+                        // Store dive center coordinates if available for distance calculation
+                        if (diveCenter.latitude && diveCenter.longitude) {
+                            diveCenterLatLng = L.latLng(diveCenter.latitude, diveCenter.longitude);
+                            console.log(`Dive Center LatLng: ${diveCenterLatLng.lat}, ${diveCenterLatLng.lng}`);
+
+                            // --- Add Dive Center Marker with Custom Logo ---
+                            const diveCenterIcon = L.icon({
+                                iconUrl: diveCenter.logoUrl || '/placehold_dc.png', // Fallback to a local placeholder if no logo provided
+                                iconSize: [32, 32], // Size of the icon
+                                iconAnchor: [16, 32], // Point of the icon which will correspond to marker's location
+                                popupAnchor: [0, -32] // Point from which the popup should open relative to the iconAnchor
+                            });
+
+                            const centerMarker = L.marker(diveCenterLatLng, { icon: diveCenterIcon }).addTo(map);
+                            centerMarker.bindPopup(`
+                                <h3 class="text-lg font-semibold">${diveCenter.name}</h3>
+                                <p>${diveCenter.address}</p>
+                                <p>This is our Dive Center!</p>
+                            `);
+                        } else {
+                           console.warn('Dive center latitude or longitude missing from config.json.');
+                        }
+                    } else {
+                        console.error('Dive center information (data.diveCenter) not found or is null in parsed config.json.');
+                        document.getElementById('dive-center-info').innerHTML = '<p class="text-red-500">Dive center information could not be loaded.</p>';
+                    }
+
+                    // --- Add Dive Sites to Map ---
+                    const diveSites = data.diveSites;
+                    if (diveSites && Array.isArray(diveSites)) {
+                        console.log(`Found ${diveSites.length} dive sites.`); // Log number of dive sites
+                        diveSites.forEach(site => {
+                            // Corrected console.log to show the actual site name
+                            console.log(`Processing Dive Site: ${site.name}`);
+                            if (site.latitude && site.longitude && site.name) {
+                                // IMPORTANT DEBUG: Log the coordinates for each site before creating marker
+                                console.log(`Creating marker for ${site.name} at Lat: ${site.latitude}, Lng: ${site.longitude}`);
+
+                                // Create a marker for each dive site at its coordinates
+                                const marker = L.marker([site.latitude, site.longitude]).addTo(map);
+
+                                // IMPORTANT: Add a tooltip for mouseover effect
+                                marker.bindTooltip(site.name); // Shows dive site name on hover
+
+                                // Create popup content for the marker (shown on click)
+                                let popupContent = `<h3 class="text-lg font-semibold">${site.name}</h3>`;
+                                if (site.depth) popupContent += `<p><strong>Depth:</strong> ${site.depth}</p>`;
+                                if (site.visibility) popupContent += `<p><strong>Visibility:</strong> ${site.visibility}</p>`;
+                                if (site.difficulty) popupContent += `<p><strong>Difficulty:</strong> ${site.difficulty}</p>`;
+                                if (site.description) popupContent += `<p class="mt-2 text-sm">${site.description}</p>`;
+                                if (site.features && Array.isArray(site.features)) {
+                                    popupContent += `<p><strong>Features:</strong> ${site.features.join(', ')}</p>`;
+                                }
+
+                                // Add YouTube URL if present
+                                if (site.youtubeUrl) {
+                                    popupContent += `<p class="mt-2"><a href="${site.youtubeUrl}" target="_blank" class="text-blue-500 hover:underline">Watch Dive Video on YouTube</a></p>`;
+                                }
+
+                                // --- Add QR Code Button if SSI_QR is present ---
+                                if (site.SSI_QR) {
+                                    // Using a unique ID for the button to attach event listener after popup opens
+                                    const buttonId = `qr-button-${site.id}`;
+                                    popupContent += `<p class="mt-2"><button id="${buttonId}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-3 rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">Show QR Code</button></p>`;
+
+                                    // Add a listener to the marker to bind the button click AFTER popup is opened
+                                    marker.on('popupopen', function() {
+                                        const qrButton = document.getElementById(buttonId);
+                                        if (qrButton) {
+                                            qrButton.onclick = () => showQrCode(site.SSI_QR, site.name);
+                                        }
+                                    });
+                                }
+
+                                // Calculate and display distance from dive center if its location is known
+                                if (diveCenterLatLng) {
+                                    const siteLatLng = L.latLng(site.latitude, site.longitude);
+                                    const distanceInMeters = diveCenterLatLng.distanceTo(siteLatLng);
+                                    const distanceInKm = (distanceInMeters / 1000).toFixed(1); // Convert to km, 1 decimal place
+                                    popupContent += `<p class="mt-2"><strong>Distance from Dive Center:</strong> ${distanceInKm} km</p>`;
+                                }
+
+                                // Bind the popup content to the marker
+                                marker.bindPopup(popupContent);
+                            } else {
+                                console.warn(`Skipping dive site "${site.name || 'Unnamed'}" due to missing latitude, longitude, or name. Site data:`, site);
+                            }
+                        });
+                        // Optional: Adjust map view to fit all markers
+                        if (diveSites.length > 0) {
+                             // Create a LatLngBounds object
+                            let bounds = new L.LatLngBounds([]);
+                            if (diveCenterLatLng) {
+                                bounds.extend(diveCenterLatLng); // Include dive center in bounds
+                            }
+                            diveSites.forEach(site => {
+                                if (site.latitude && site.longitude) {
+                                    bounds.extend([site.latitude, site.longitude]);
+                                }
+                            });
+                            // Fit the map to the calculated bounds, padding it slightly
+                            map.fitBounds(bounds.pad(0.2));
+                        }
+                    } else {
+                        console.error('Dive sites array not found or invalid in config.json');
+                    }
+
+                } catch (error) {
+                    // If anything goes wrong during fetching or parsing
+                    console.error('Error loading dive data:', error);
+                    document.getElementById('dive-center-info').innerHTML = '<p class="text-red-500">Failed to load dive data. Please check config.json and your network connection, or if it\'s correctly formatted JSON.</p>';
+                }
+            }
+
+            // Call the function to load dive data when the window loads
+            loadDiveData();
+        };
+    </script>
+</body>
+</html>
