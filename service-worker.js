@@ -10,18 +10,18 @@ const urlsToCache = [
   './index.html',
   './manifest.json',
   './config.json',
-  './dive-map-pwa/images/marker-icon-2x.png',
-  './dive-map-pwa/images/marker-icon.png',
-  './dive-map-pwa/images/marker-shadow.png',
-  './dive-map-pwa/images/ScubaSur.png',
-  './dive-map-pwa/images/icon-192x192.png',
-  './dive-map-pwa/images/icon-512x512.png',
+  'images/marker-icon-2x.png',
+  'images/marker-icon.png',
+  './images/marker-shadow.png',
+  './images/ScubaSur.png',
+  './images/icon-192x192.png',
+  './images/icon-512x512.png',
   './placehold_dc.png',
   // --- IMPORTANT: Add paths to ALL your QR code images here ---
   // Assuming your QR codes are in a folder named 'qrcodes' in the root.
   // You need to explicitly list every single QR code image file.
-  './qrcodes/210.png',  //Site:Balitown
-	'./qrcodes/212.png',  //Site:Hucan Dana
+  'qrcodes/210.png',  //Site:Balitown
+	'qrcodes/212.png',  //Site:Hucan Dana
 	'./qrcodes/214.png',  //Site:el Percel Dive Site
 	'./qrcodes/215.png',  //Site:Dorado Reef
 	'./qrcodes/222.png',  //Site:Salobre
