@@ -7,48 +7,48 @@ const CACHE_NAME = 'dive-map-v6';
 // Ensure these paths EXACTLY match the file locations in your project folder.
 
 const urlsToCache = [
-  './index.html',
-  './manifest.json',
-  './config.json',
+  'index.html',
+  'manifest.json',
+  'config.json',
   'images/marker-icon-2x.png',
   'images/marker-icon.png',
-  './images/marker-shadow.png',
-  './images/ScubaSur.png',
-  './images/icon-192x192.png',
-  './images/icon-512x512.png',
-  './placehold_dc.png',
+  'images/marker-shadow.png',
+  'images/ScubaSur.png',
+  'images/icon-192x192.png',
+  'images/icon-512x512.png',
+  'placehold_dc.png',
   // --- IMPORTANT: Add paths to ALL your QR code images here ---
   // Assuming your QR codes are in a folder named 'qrcodes' in the root.
   // You need to explicitly list every single QR code image file.
   'qrcodes/210.png',  //Site:Balitown
 	'qrcodes/212.png',  //Site:Hucan Dana
-	'./qrcodes/214.png',  //Site:el Percel Dive Site
-	'./qrcodes/215.png',  //Site:Dorado Reef
-	'./qrcodes/222.png',  //Site:Salobre
-	'./qrcodes/223.png',  //Site:Sailboat Deep
-	'./qrcodes/224.png',  //Site:Sailboat
-	'./qrcodes/226.png',  //Site:Piper Cherokee P32
-	'./qrcodes/228.png',  //Site:Pasito Blanco
-	'./qrcodes/233.png',  //Site:Mogan Caves
-	'./qrcodes/234.png',  //Site:Mogan Wrecks
-	'./qrcodes/235.png',  //Site:Meteor
-	'./qrcodes/236.png',  //Site:Medio Almud
-	'./qrcodes/237.png',  //Site:Media Shallow
-	'./qrcodes/239.png',  //Site:Magic 2
-	'./qrcodes/244.png',  //Site:Helena Reef
-	'./qrcodes/255.png',  //Site:Como Tu
-	'./qrcodes/258.png',  //Site:Balito Princess
-	'./qrcodes/259.png',  //Site:Balito Deep
-	'./qrcodes/260.png',  //Site:Balito - Alexandria
-	'./qrcodes/261.png',  //Site:Bahia Lila
-	'./qrcodes/262.png',  //Site:Bahia Blanca
-	'./qrcodes/264.png',  //Site:Artificial - Raybank
-	'./qrcodes/265.png',  //Site:Artificial - Blok3
-	'./qrcodes/266.png',  //Site:Artificial - Blok2
-	'./qrcodes/267.png',  //Site:Artificial - Blok1
-	'./qrcodes/268.png',  //Site:Artificial - Artificial
-	'./qrcodes/270.png',  //Site:Arguineguin Reef
-	'./qrcodes/290.png',  //Site:Bahia Verde
+	'qrcodes/214.png',  //Site:el Percel Dive Site
+	'qrcodes/215.png',  //Site:Dorado Reef
+	'qrcodes/222.png',  //Site:Salobre
+	'qrcodes/223.png',  //Site:Sailboat Deep
+	'qrcodes/224.png',  //Site:Sailboat
+	'qrcodes/226.png',  //Site:Piper Cherokee P32
+	'qrcodes/228.png',  //Site:Pasito Blanco
+	'qrcodes/233.png',  //Site:Mogan Caves
+	'qrcodes/234.png',  //Site:Mogan Wrecks
+	'qrcodes/235.png',  //Site:Meteor
+	'qrcodes/236.png',  //Site:Medio Almud
+	'qrcodes/237.png',  //Site:Media Shallow
+	'qrcodes/239.png',  //Site:Magic 2
+	'qrcodes/244.png',  //Site:Helena Reef
+	'qrcodes/255.png',  //Site:Como Tu
+	'qrcodes/258.png',  //Site:Balito Princess
+	'qrcodes/259.png',  //Site:Balito Deep
+	'qrcodes/260.png',  //Site:Balito - Alexandria
+	'qrcodes/261.png',  //Site:Bahia Lila
+	'qrcodes/262.png',  //Site:Bahia Blanca
+	'qrcodes/264.png',  //Site:Artificial - Raybank
+	'qrcodes/265.png',  //Site:Artificial - Blok3
+	'qrcodes/266.png',  //Site:Artificial - Blok2
+	'qrcodes/267.png',  //Site:Artificial - Blok1
+	'qrcodes/268.png',  //Site:Artificial - Artificial
+	'qrcodes/270.png',  //Site:Arguineguin Reef
+	'qrcodes/290.png',  //Site:Bahia Verde
   // ... continue listing all your QR code images (e.g., '/qrcodes/qr_site1.png', '/qrcodes/qr_site2.png')
 ];
 

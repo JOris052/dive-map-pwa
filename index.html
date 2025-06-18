@@ -2,11 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <base href="./">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dive Center Map</title>
     <!-- Link to the Web App Manifest for PWA features -->
-    <link rel="manifest" href="./manifest.json">
+    <link rel="manifest" href="manifest.json">
     <!-- Theme color for the browser UI (e.g., Android status bar) -->
     <meta name="theme-color" content="#007bff">
 
@@ -146,7 +145,7 @@
     <script>
         // IMPORTANT: Tell Leaflet where to find its default icons
         // This must be done BEFORE L.map() is called.
-        L.Icon.Default.imagePath = './images/'; // Adjust this path if your 'images' folder is named differently or in a subfolder
+        L.Icon.Default.imagePath = 'images/'; // Adjust this path if your 'images' folder is named differently or in a subfolder
 
         // Get references to the modal elements
         const qrModal = document.getElementById('qrModal');
@@ -158,7 +157,7 @@
         // Function to show the QR code modal
         function showQrCode(imageFilename, siteName) {
             // Construct the path to the QR code image. Assumes QR codes are in a 'qrcodes' folder.
-            qrCodeImage.src = `./QRcodes/${imageFilename}`;
+            qrCodeImage.src = `QRcodes/${imageFilename}`;
             qrModalTitle.textContent = `QR Code for ${siteName}`;
             qrModalSiteName.textContent = `(${siteName})`;
             qrModal.classList.add('show'); // Show the modal
@@ -185,7 +184,7 @@
         window.onload = function() {
             // Register the Service Worker for PWA offline capabilities
 			if ('serviceWorker' in navigator) {
-				navigator.serviceWorker.register('./service-worker.js')
+				navigator.serviceWorker.register('service-worker.js')
 				.then(reg => console.log('Service Worker Registered', reg))
 				.catch(err => console.error('Service Worker Registration Failed:', err));
 			}
@@ -241,7 +240,7 @@
 
                             // --- Add Dive Center Marker with Custom Logo ---
                             const diveCenterIcon = L.icon({
-                                iconUrl: diveCenter.logoUrl || './placehold_dc.png', // Fallback to a local placeholder if no logo provided
+                                iconUrl: diveCenter.logoUrl || 'placehold_dc.png', // Fallback to a local placeholder if no logo provided
                                 iconSize: [32, 32], // Size of the icon
                                 iconAnchor: [16, 32], // Point of the icon which will correspond to marker's location
                                 popupAnchor: [0, -32] // Point from which the popup should open relative to the iconAnchor
