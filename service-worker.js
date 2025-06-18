@@ -18,38 +18,38 @@ const urlsToCache = [
   'images/icon-512x512.png',
   'placehold_dc.png',
   // --- IMPORTANT: Add paths to ALL your QR code images here ---
-  // Assuming your QR codes are in a folder named 'qrcodes' in the root.
+  // Assuming your QR codes are in a folder named 'QRCodes' in the root.
   // You need to explicitly list every single QR code image file.
-  'qrcodes/210.png',  //Site:Balitown
-	'qrcodes/212.png',  //Site:Hucan Dana
-	'qrcodes/214.png',  //Site:el Percel Dive Site
-	'qrcodes/215.png',  //Site:Dorado Reef
-	'qrcodes/222.png',  //Site:Salobre
-	'qrcodes/223.png',  //Site:Sailboat Deep
-	'qrcodes/224.png',  //Site:Sailboat
-	'qrcodes/226.png',  //Site:Piper Cherokee P32
-	'qrcodes/228.png',  //Site:Pasito Blanco
-	'qrcodes/233.png',  //Site:Mogan Caves
-	'qrcodes/234.png',  //Site:Mogan Wrecks
-	'qrcodes/235.png',  //Site:Meteor
-	'qrcodes/236.png',  //Site:Medio Almud
-	'qrcodes/237.png',  //Site:Media Shallow
-	'qrcodes/239.png',  //Site:Magic 2
-	'qrcodes/244.png',  //Site:Helena Reef
-	'qrcodes/255.png',  //Site:Como Tu
-	'qrcodes/258.png',  //Site:Balito Princess
-	'qrcodes/259.png',  //Site:Balito Deep
-	'qrcodes/260.png',  //Site:Balito - Alexandria
-	'qrcodes/261.png',  //Site:Bahia Lila
-	'qrcodes/262.png',  //Site:Bahia Blanca
-	'qrcodes/264.png',  //Site:Artificial - Raybank
-	'qrcodes/265.png',  //Site:Artificial - Blok3
-	'qrcodes/266.png',  //Site:Artificial - Blok2
-	'qrcodes/267.png',  //Site:Artificial - Blok1
-	'qrcodes/268.png',  //Site:Artificial - Artificial
-	'qrcodes/270.png',  //Site:Arguineguin Reef
-	'qrcodes/290.png',  //Site:Bahia Verde
-  // ... continue listing all your QR code images (e.g., '/qrcodes/qr_site1.png', '/qrcodes/qr_site2.png')
+  'QRCodes/210.png',  //Site:Balitown
+	'QRCodes/212.png',  //Site:Hucan Dana
+	'QRCodes/214.png',  //Site:el Percel Dive Site
+	'QRCodes/215.png',  //Site:Dorado Reef
+	'QRCodes/222.png',  //Site:Salobre
+	'QRCodes/223.png',  //Site:Sailboat Deep
+	'QRCodes/224.png',  //Site:Sailboat
+	'QRCodes/226.png',  //Site:Piper Cherokee P32
+	'QRCodes/228.png',  //Site:Pasito Blanco
+	'QRCodes/233.png',  //Site:Mogan Caves
+	'QRCodes/234.png',  //Site:Mogan Wrecks
+	'QRCodes/235.png',  //Site:Meteor
+	'QRCodes/236.png',  //Site:Medio Almud
+	'QRCodes/237.png',  //Site:Media Shallow
+	'QRCodes/239.png',  //Site:Magic 2
+	'QRCodes/244.png',  //Site:Helena Reef
+	'QRCodes/255.png',  //Site:Como Tu
+	'QRCodes/258.png',  //Site:Balito Princess
+	'QRCodes/259.png',  //Site:Balito Deep
+	'QRCodes/260.png',  //Site:Balito - Alexandria
+	'QRCodes/261.png',  //Site:Bahia Lila
+	'QRCodes/262.png',  //Site:Bahia Blanca
+	'QRCodes/264.png',  //Site:Artificial - Raybank
+	'QRCodes/265.png',  //Site:Artificial - Blok3
+	'QRCodes/266.png',  //Site:Artificial - Blok2
+	'QRCodes/267.png',  //Site:Artificial - Blok1
+	'QRCodes/268.png',  //Site:Artificial - Artificial
+	'QRCodes/270.png',  //Site:Arguineguin Reef
+	'QRCodes/290.png',  //Site:Bahia Verde
+  // ... continue listing all your QR code images (e.g., '/QRCodes/qr_site1.png', '/QRCodes/qr_site2.png')
 ];
 
 /// --- Install event: Caches all necessary files ---

@@ -156,8 +156,8 @@
 
         // Function to show the QR code modal
         function showQrCode(imageFilename, siteName) {
-            // Construct the path to the QR code image. Assumes QR codes are in a 'qrcodes' folder.
-            qrCodeImage.src = `QRcodes/${imageFilename}`;
+            // Construct the path to the QR code image. Assumes QR codes are in a 'QRCodes' folder.
+            qrCodeImage.src = `QRCodes/${imageFilename}`;
             qrModalTitle.textContent = `QR Code for ${siteName}`;
             qrModalSiteName.textContent = `(${siteName})`;
             qrModal.classList.add('show'); // Show the modal
