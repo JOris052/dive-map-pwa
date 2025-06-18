@@ -16,6 +16,7 @@ const urlsToCache = [
   'images/ScubaSur.png',
   'images/icon-192x192.png',
   'images/icon-512x512.png',
+  'images//screenshot1.png',
   'placehold_dc.png',
   // --- IMPORTANT: Add paths to ALL your QR code images here ---
   // Assuming your QR codes are in a folder named 'qrcodes' in the root.
