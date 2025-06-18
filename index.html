@@ -110,18 +110,15 @@
 <body class="bg-gray-100 p-4 md:p-8 flex flex-col items-center">
     <!-- Main content container -->
     <div class="max-w-4xl w-full">
-        <h1 class="text-3xl font-bold text-center text-blue-800 mb-6">Dive Center Map</h1>
+        <h1 class="text-3xl font-bold text-center text-blue-800 mb-6">Dive Sites</h1>
 
         <!-- Dive Center Information Section -->
         <div id="dive-center-info" class="info-card">
-            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Our Dive Center</h2>
             <p id="center-name" class="text-xl font-medium text-blue-700"></p>
-            <p id="center-address" class="text-gray-700"></p>
             <p id="center-phone" class="text-gray-700"></p>
             <p id="center-email" class="text-gray-700"></p>
-     		<a href="https://www.scubasur.net" target="_blank" class="text-blue-500 hover:underline">our site: www.scubasur.net</a></p>
-             <p id="center-description" class="text-gray-600 mt-2"></p>
-        </div>
+     		<a href="https://www.scubasur.net" target="_blank" class="text-blue-500 hover:underline">www.scubasur.net</a></p>
+            </div>
 
         <!-- Map Container -->
         <div id="mapid"></div>
@@ -228,10 +225,10 @@
                     if (diveCenter) {
                         console.log('Dive center data found:', diveCenter); // Confirm diveCenter exists
                         document.getElementById('center-name').textContent = diveCenter.name;
-                        document.getElementById('center-address').textContent = diveCenter.address;
+                        // document.getElementById('center-address').textContent = diveCenter.address;
                         document.getElementById('center-phone').textContent = `Phone: ${diveCenter.phone}`;
                         document.getElementById('center-email').textContent = `Email: ${diveCenter.email}`;
-                        document.getElementById('center-description').textContent = diveCenter.description;
+                        // document.getElementById('center-description').textContent = diveCenter.description;
 
                         // Store dive center coordinates if available for distance calculation
                         if (diveCenter.latitude && diveCenter.longitude) {
