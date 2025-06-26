@@ -8,6 +8,7 @@ const CACHE_NAME = 'dive-map-v6';
 
 const urlsToCache = [
   'index.html',
+  'offline.html',
   'manifest.json',
   'config.json',
   'images/marker-icon-2x.png',
