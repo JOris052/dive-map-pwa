@@ -348,5 +348,42 @@
             loadDiveData();
         };
     </script>
+    <script>
+	    // Check for new version
+		if ('serviceWorker' in navigator) {
+		  window.addEventListener('load', () => {
+		    navigator.serviceWorker.register('/service-worker.js').then(registration => {
+		      // Wait 5 seconds before checking for an update
+		      setTimeout(() => {
+		        registration.update();
+		        console.log('Service Worker: Manual update check triggered');
+		      }, 5000);
+		
+		      registration.onupdatefound = () => {
+		        const newWorker = registration.installing;
+		        newWorker.onstatechange = () => {
+		          if (newWorker.state === 'installed') {
+		            if (navigator.serviceWorker.controller) {
+		              console.log('⚠️ New version available! Prompt user or reload.');
+		              // OPTIONAL: Auto-refresh or show UI like a snackbar
+		              // window.location.reload(); // uncomment for auto-refresh
+		            } else {
+		              console.log('App is ready for offline use.');
+		            }
+		          }
+		        };
+		      };
+		    .catch(error => {
+			  console.error('Service Worker: Network fetch failed:', event.request.url, error);
+			
+			  // If offline and trying to load an HTML page, serve offline fallback
+			  if (event.request.destination === 'document') {
+			    return caches.match('offline.html');
+			  }
+			
+			  // Otherwise return nothing (broken image/icon etc.)
+			});
+		}
+    </script>
 </body>
 </html>
