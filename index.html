@@ -277,12 +277,12 @@
                                 // Create popup content for the marker (shown on click)
                                 let popupContent = `<h3 class="text-lg font-semibold">${site.name}</h3>`;
                                 if (site.depth) popupContent += `<p><strong>Depth:</strong> ${site.depth}</p>`;
-                                if (site.visibility) popupContent += `<p><strong>Visibility:</strong> ${site.visibility}</p>`;
+                                // if (site.visibility) popupContent += `<p><strong>Visibility:</strong> ${site.visibility}</p>`;
                                 if (site.difficulty) popupContent += `<p><strong>Difficulty:</strong> ${site.difficulty}</p>`;
                                 if (site.description) popupContent += `<p class="mt-2 text-sm">${site.description}</p>`;
-                                if (site.features && Array.isArray(site.features)) {
-                                    popupContent += `<p><strong>Features:</strong> ${site.features.join(', ')}</p>`;
-                                }
+                                // if (site.features && Array.isArray(site.features)) {
+                                //     popupContent += `<p><strong>Features:</strong> ${site.features.join(', ')}</p>`;
+                                // }
 
                                 // Add YouTube URL if present
                                 if (site.youtubeUrl) {
