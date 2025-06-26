@@ -1,0 +1,120 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dive Center Map</title>
+    <!-- Link to the Web App Manifest for PWA features -->
+    <link rel="manifest" href="manifest.json">
+    <!-- Theme color for the browser UI (e.g., Android status bar) -->
+    <meta name="theme-color" content="#007bff">
+
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter font -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
+    <!-- Leaflet CSS for map styling -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        #mapid {
+            height: 60vh; /* Map takes 60% of viewport height */
+            width: 100%;
+            border-radius: 0.5rem; /* Rounded corners */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            flex-grow: 1; /* Allow map to grow and take available space */
+        }
+        .info-card {
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        /* Custom styling for Leaflet popups and tooltips */
+        .leaflet-popup-content-wrapper,
+        .leaflet-tooltip-pane .leaflet-tooltip {
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .leaflet-popup-content,
+        .leaflet-tooltip-pane .leaflet-tooltip-content {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.875rem; /* Small text for tooltip */
+            padding: 0.5rem 0.75rem; /* Padding for tooltip */
+        }
+        @media (min-width: 768px) {
+            #mapid {
+                height: 75vh; /* Taller on larger screens */
+            }
+        }
+
+        /* Styles for the QR Code Modal */
+        .qr-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7); /* Dark overlay */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000; /* Ensure it's on top */
+            opacity: 0; /* Hidden by default */
+            visibility: hidden; /* Hidden by default */
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .qr-modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .qr-modal-content {
+            background-color: #ffffff;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .qr-modal-content img {
+            max-width: 100%;
+            max-height: 80vh; /* Adjust as needed */
+            height: auto;
+            border-radius: 0.25rem;
+        }
+        .qr-modal-close-button {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #4a5568; /* Tailwind gray-700 */
+        }
+        .qr-modal-close-button:hover {
+            color: #2d3748; /* Tailwind gray-900 */
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-4 md:p-8 flex flex-col items-center">
+    <!-- Main content container -->
+    <div class="max-w-4xl w-full">
+        <h1 class="text-3xl font-bold text-center text-blue-800 mb-6">Dive Sites</h1>
+
+        <!-- Dive Center Information Section -->
+        <div id="dive-center-info" class="info-card">
+            <p id="center-name" class="text-xl font-medium text-blue-700">Scuba Sur Diving Gran Canaria</p>
+     		<a href="https://www.scubasur.net" target="_blank" class="text-blue-500 hover:underline">www.scubasur.net</a></p>
+            </div>
+    </div></body>
+    
